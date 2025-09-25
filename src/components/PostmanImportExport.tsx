@@ -70,11 +70,26 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+    <div 
+      className="fixed inset-0 flex items-center justify-center z-[9999]"
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 99999,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Softer grey background
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
       <div 
         className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden mx-4"
         onClick={(e) => e.stopPropagation()}
-        style={{ 
+        style={{
           backgroundColor: 'white',
           borderRadius: '12px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
@@ -84,7 +99,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         }}
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-200 bg-slate-50">
+        <div className="p-8 border-b border-slate-200 bg-slate-50">
           <h2 className="text-xl font-bold text-slate-800">
             Import/Export Collections
           </h2>
@@ -94,7 +109,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-8 space-y-8">
           {/* Import Section */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-4">Import from Postman</h3>
@@ -167,7 +182,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <div className="p-8 border-t border-slate-200 bg-slate-50 flex justify-end">
           <button
             onClick={onClose}
             className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"

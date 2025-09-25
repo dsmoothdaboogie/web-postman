@@ -41,11 +41,11 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ requestConfig, onClose })
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] overflow-hidden">
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-8 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">Generate Code</h2>
         </div>
         
-        <div className="p-6">
+        <div className="p-8">
           {/* Language Selection */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -88,7 +88,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ requestConfig, onClose })
           </div>
         </div>
 
-        <div className="p-6 border-t border-gray-200 flex justify-end">
+        <div className="p-8 border-t border-gray-200 flex justify-end">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"

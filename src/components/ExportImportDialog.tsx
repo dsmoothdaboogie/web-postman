@@ -77,10 +77,39 @@ const ExportImportDialog: React.FC<ExportImportDialogProps> = ({ onClose, onImpo
   ];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-800">Export / Import</h2>
+    <div 
+      className="fixed inset-0 flex items-center justify-center z-[9999]"
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 99999,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Softer grey background
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <div 
+        className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden mx-4"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          maxWidth: '32rem',
+          width: '100%',
+          margin: '0 1rem'
+        }}
+      >
+        <div className="p-8 border-b border-slate-200 bg-slate-50">
+          <h2 className="text-xl font-bold text-slate-800">Export / Import</h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Export your data or import from files
+          </p>
         </div>
         
         {/* Tabs */}
@@ -101,7 +130,7 @@ const ExportImportDialog: React.FC<ExportImportDialogProps> = ({ onClose, onImpo
           ))}
         </div>
 
-        <div className="p-6">
+        <div className="p-8">
           {activeTab === 'export' && (
             <div className="space-y-4">
               <div className="text-center">
@@ -187,10 +216,10 @@ const ExportImportDialog: React.FC<ExportImportDialogProps> = ({ onClose, onImpo
         </div>
 
         {activeTab !== 'postman' && (
-          <div className="p-6 border-t border-gray-200 flex justify-end">
+          <div className="p-6 border-t border-slate-200 bg-slate-50 flex justify-end">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+              className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"
             >
               Close
             </button>

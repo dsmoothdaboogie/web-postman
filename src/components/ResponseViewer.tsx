@@ -7,6 +7,7 @@ interface ResponseViewerProps {
 
 const ResponseViewer: React.FC<ResponseViewerProps> = ({ response }) => {
   const [activeTab, setActiveTab] = useState<'body' | 'headers' | 'cookies'>('body');
+  const [copySuccess, setCopySuccess] = useState(false);
 
   if (!response) {
     return (
@@ -43,8 +44,27 @@ const ResponseViewer: React.FC<ResponseViewerProps> = ({ response }) => {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(response?.body || '');
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = response?.body || '';
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    }
+  };
+
   return (
-    <div className="h-full flex flex-col bg-slate-50/50 min-w-0">
+    <div className="h-full flex flex-col bg-slate-50/50 min-w-0" style={{ height: '100%', maxHeight: '100%' }}>
       {/* Response Status */}
       <div className="p-6 border-b border-slate-200 bg-white shadow-modern flex-shrink-0">
         <div className="flex items-center justify-between">
@@ -59,6 +79,17 @@ const ResponseViewer: React.FC<ResponseViewerProps> = ({ response }) => {
               {formatSize(response.responseSize)}
             </span>
           </div>
+          <button
+            onClick={copyToClipboard}
+            className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
+              copySuccess
+                ? 'bg-green-100 text-green-700 border border-green-200'
+                : 'bg-orange-100 text-orange-700 hover:bg-orange-200 border border-orange-200'
+            }`}
+            title="Copy response body to clipboard"
+          >
+            {copySuccess ? '✓ Copied!' : '📋 Copy'}
+          </button>
         </div>
       </div>
 
@@ -84,18 +115,29 @@ const ResponseViewer: React.FC<ResponseViewerProps> = ({ response }) => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto min-h-0">
+      <div className="flex-1 overflow-y-auto min-h-0" style={{ height: 'calc(100% - 120px)', maxHeight: 'calc(100% - 120px)' }}>
         {activeTab === 'body' && (
-          <div className="p-6">
-            <div className="bg-gray-900 text-gray-100 rounded-md p-4 font-mono text-sm overflow-x-auto">
-              <pre>{formatBody(response.body)}</pre>
+          <div className="p-6 h-full">
+            <div className="bg-gray-900 text-gray-100 rounded-md p-4 font-mono text-sm overflow-auto h-full relative">
+              <button
+                onClick={copyToClipboard}
+                className={`absolute top-2 right-2 px-3 py-1 rounded text-xs font-semibold transition-all duration-200 ${
+                  copySuccess
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+                title="Copy JSON to clipboard"
+              >
+                {copySuccess ? '✓ Copied' : '📋 Copy'}
+              </button>
+              <pre className="whitespace-pre-wrap pr-16">{formatBody(response.body)}</pre>
             </div>
           </div>
         )}
 
         {activeTab === 'headers' && (
-          <div className="p-4">
-            <div className="space-y-2">
+          <div className="p-4 h-full">
+            <div className="space-y-2 h-full overflow-y-auto">
               {Object.entries(response.headers).map(([key, value]) => (
                 <div key={key} className="flex items-start space-x-4 py-2 border-b border-gray-100">
                   <div className="font-medium text-gray-700 min-w-0 flex-shrink-0">

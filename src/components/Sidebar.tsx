@@ -21,9 +21,9 @@ const Sidebar: React.FC = () => {
   const [editingEnvironment, setEditingEnvironment] = useState<Environment | undefined>(undefined);
 
   const sections = [
-    { id: 'collections', label: 'Collections', icon: '📁' },
-    { id: 'history', label: 'History', icon: '🕒' },
-    { id: 'environments', label: 'Environments', icon: '🌍' }
+    { id: 'collections', label: 'Collections', icon: '📁', tooltip: 'Manage API collections and requests' },
+    { id: 'history', label: 'History', icon: '🕒', tooltip: 'View and re-run previous requests' },
+    { id: 'environments', label: 'Environments', icon: '🌍', tooltip: 'Manage environment variables' }
   ];
 
   const handleCreateCollection = () => {
@@ -129,6 +129,7 @@ const Sidebar: React.FC = () => {
                 ? 'text-orange-600 border-b-2 border-orange-500 bg-orange-50/50'
                 : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
             }`}
+            title={section.tooltip || section.label}
           >
             <span className="mr-2 text-base">{section.icon}</span>
             {section.label}
@@ -137,15 +138,16 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto min-h-0 sidebar-content sidebar-content-fixed">
-        <div className="h-full sidebar-section sidebar-section-content">
+      <div className="flex-1 overflow-y-auto min-h-0">
+        <div className="h-full">
           {activeSection === 'collections' && (
-            <div className="p-6 h-full">
+            <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-slate-800 text-sm uppercase tracking-wider">Collections</h3>
                 <button 
                   onClick={handleCreateCollection}
                   className="px-3 py-1.5 text-orange-600 hover:text-orange-700 hover:bg-orange-50 text-sm font-semibold rounded-lg transition-all duration-200"
+                  title="Create new collection"
                 >
                   + New
                 </button>
@@ -255,7 +257,7 @@ const Sidebar: React.FC = () => {
           )}
 
           {activeSection === 'history' && (
-            <div className="p-6 h-full">
+            <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-slate-800 text-sm uppercase tracking-wider">History</h3>
                 <button
@@ -304,7 +306,7 @@ const Sidebar: React.FC = () => {
           )}
 
           {activeSection === 'environments' && (
-            <div className="p-6 h-full">
+            <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-slate-800 text-sm uppercase tracking-wider">Environments</h3>
                 <button

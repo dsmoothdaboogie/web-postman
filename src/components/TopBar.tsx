@@ -80,7 +80,7 @@ const TopBar: React.FC<TopBarProps> = ({
             <button
               onClick={onNewWebSocketTab}
               className="px-5 py-4 text-slate-500 hover:text-orange-600 hover:bg-orange-50 transition-all duration-200"
-              title="New WebSocket"
+              title="New WebSocket Connection"
             >
               🔌
             </button>
@@ -89,7 +89,7 @@ const TopBar: React.FC<TopBarProps> = ({
             <button
               onClick={onNewSSETab}
               className="px-5 py-4 text-slate-500 hover:text-orange-600 hover:bg-orange-50 transition-all duration-200"
-              title="New SSE"
+              title="New Server-Sent Events Connection"
             >
               📡
             </button>
@@ -109,28 +109,28 @@ const TopBar: React.FC<TopBarProps> = ({
             }
           }}
           className="p-3 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all duration-200 shadow-modern"
-          title="Generate Code"
+          title="Generate Code Snippet"
         >
           💻
         </button>
         <button 
           onClick={() => setShowSettings(true)}
           className="p-3 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all duration-200 shadow-modern"
-          title="Settings"
+          title="Settings & Preferences"
         >
           ⚙️
         </button>
         <button 
           onClick={() => setShowPostmanImportExport(true)}
           className="p-3 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all duration-200 shadow-modern"
-          title="Postman Import/Export"
+          title="Import/Export Postman Collections"
         >
           📥
         </button>
         <button 
           onClick={() => setShowExportImport(true)}
           className="p-3 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all duration-200 shadow-modern"
-          title="Export/Import"
+          title="Export/Import Application Data"
         >
           📤
         </button>
