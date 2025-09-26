@@ -67,13 +67,13 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
       }}
     >
       <div
-        className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden mx-4"
+        className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[80vh] overflow-hidden mx-4"
         onClick={(e) => e.stopPropagation()}
         style={{
           backgroundColor: 'white',
           borderRadius: '12px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-          maxWidth: '32rem',
+          maxWidth: '48rem',
           width: '100%',
           margin: '0 4rem'
         }}
