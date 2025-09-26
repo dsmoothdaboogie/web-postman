@@ -94,16 +94,16 @@ const EnvironmentEditor: React.FC<EnvironmentEditorProps> = ({ environment, onCl
       <div 
         className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden mx-4"
         onClick={(e) => e.stopPropagation()}
-        style={{ 
+        style={{
           backgroundColor: 'white',
           borderRadius: '12px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
           maxWidth: '32rem',
           width: '100%',
-          margin: '0 1rem'
+          margin: '0 2rem'
         }}
       >
-               <div className="p-8 border-b border-slate-200 bg-slate-50">
+               <div className="p-10 border-b border-slate-200 bg-slate-50">
           <h2 className="text-xl font-bold text-slate-800">
             {environment ? 'Edit Environment' : 'Create Environment'}
           </h2>
@@ -112,7 +112,7 @@ const EnvironmentEditor: React.FC<EnvironmentEditorProps> = ({ environment, onCl
           </p>
         </div>
         
-               <div className="p-8 space-y-8 overflow-y-auto max-h-[60vh]">
+               <div className="p-10 space-y-8 overflow-y-auto max-h-[60vh]">
           {/* Environment Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -176,7 +176,7 @@ const EnvironmentEditor: React.FC<EnvironmentEditorProps> = ({ environment, onCl
           </div>
         </div>
 
-               <div className="p-8 border-t border-slate-200 bg-slate-50 flex justify-between">
+               <div className="p-10 border-t border-slate-200 bg-slate-50 flex justify-between">
           <div>
             {environment && (
               <button

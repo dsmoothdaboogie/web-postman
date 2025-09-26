@@ -95,11 +95,11 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
           maxWidth: '32rem',
           width: '100%',
-          margin: '0 1rem'
+          margin: '0 2rem'
         }}
       >
         {/* Header */}
-        <div className="p-8 border-b border-slate-200 bg-slate-50">
+        <div className="p-10 border-b border-slate-200 bg-slate-50">
           <h2 className="text-xl font-bold text-slate-800">
             Import/Export Collections
           </h2>
@@ -109,7 +109,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Content */}
-        <div className="p-8 space-y-8">
+        <div className="p-10 space-y-8">
           {/* Import Section */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-4">Import from Postman</h3>
@@ -182,7 +182,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Footer */}
-        <div className="p-8 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <div className="p-10 border-t border-slate-200 bg-slate-50 flex justify-end">
           <button
             onClick={onClose}
             className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"

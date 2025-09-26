@@ -34,11 +34,11 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-        <div className="p-8 border-b border-gray-200">
+        <div className="p-10 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">Settings</h2>
         </div>
         
-        <div className="p-8 space-y-8">
+        <div className="p-10 space-y-8">
           {/* Proxy Settings */}
           <div>
             <h3 className="text-lg font-medium text-gray-800 mb-4">Proxy Settings</h3>
@@ -118,7 +118,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
           </div>
         </div>
 
-        <div className="p-8 border-t border-gray-200 flex justify-between">
+        <div className="p-10 border-t border-gray-200 flex justify-between">
           <button
             onClick={handleClear}
             className="px-4 py-2 text-gray-600 hover:text-gray-800"
