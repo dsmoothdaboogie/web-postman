@@ -105,7 +105,7 @@ const ExportImportDialog: React.FC<ExportImportDialogProps> = ({ onClose, onImpo
           margin: '0 4rem'
         }}
       >
-        <div className="p-16 border-b border-slate-200 bg-slate-50">
+        <div className="p-20 border-b border-slate-200 bg-slate-50">
           <h2 className="text-xl font-bold text-slate-800">Export / Import</h2>
           <p className="text-sm text-slate-500 mt-1">
             Export your data or import from files
@@ -130,7 +130,7 @@ const ExportImportDialog: React.FC<ExportImportDialogProps> = ({ onClose, onImpo
           ))}
         </div>
 
-        <div className="p-16">
+        <div className="p-20">
           {activeTab === 'export' && (
             <div className="space-y-4">
               <div className="text-center">
