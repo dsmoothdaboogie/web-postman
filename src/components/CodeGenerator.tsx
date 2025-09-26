@@ -85,17 +85,17 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ requestConfig, onClose })
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
           maxWidth: '56rem',
           width: '100%',
-          margin: '0 3rem'
+          margin: '0 4rem'
         }}
       >
-        <div className="p-12 border-b border-slate-200 bg-slate-50">
+        <div className="p-16 border-b border-slate-200 bg-slate-50">
           <h2 className="text-xl font-bold text-slate-800">Generate Code Snippet</h2>
           <p className="text-sm text-slate-500 mt-1">
             Generate code snippets for your API request in various programming languages
           </p>
         </div>
         
-        <div className="p-12 space-y-8 overflow-y-auto max-h-[60vh]">
+        <div className="p-16 space-y-8 overflow-y-auto max-h-[60vh]">
           {/* Language Selection */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-4">
@@ -138,7 +138,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ requestConfig, onClose })
           </div>
         </div>
 
-        <div className="p-12 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <div className="p-16 border-t border-slate-200 bg-slate-50 flex justify-end">
           <button
             onClick={onClose}
             className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"
