@@ -78,15 +78,15 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
           margin: '0 4rem'
         }}
       >
-        <div style={{ padding: '80px' }}>
-        <div className="border-b border-slate-200 bg-slate-50" style={{ margin: '-80px', padding: '80px', marginBottom: '80px' }}>
+        <div className="p-6">
+        <div className="border-b border-slate-200 bg-slate-50 -m-6 p-6 mb-6">
           <h2 className="text-xl font-bold text-slate-800">Settings & Preferences</h2>
           <p className="text-sm text-slate-500 mt-1">
             Configure your application settings and preferences
           </p>
         </div>
         
-        <div className="space-y-8 overflow-y-auto max-h-[60vh]">
+        <div className="space-y-6 overflow-y-auto max-h-[50vh]">
           {/* Proxy Settings */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-4">Proxy Settings</h3>
@@ -166,7 +166,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
           </div>
         </div>
 
-        <div className="border-t border-slate-200 bg-slate-50 flex justify-between" style={{ margin: '-80px', padding: '80px', marginTop: '80px' }}>
+        <div className="border-t border-slate-200 bg-slate-50 -m-6 p-6 mt-6 flex justify-between">
           <button
             onClick={handleClear}
             className="px-6 py-3 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-all duration-200 font-semibold"

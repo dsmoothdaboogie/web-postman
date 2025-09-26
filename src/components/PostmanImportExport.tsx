@@ -98,9 +98,9 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
           margin: '0 4rem'
         }}
       >
-        <div style={{ padding: '80px' }}>
+        <div className="p-6">
         {/* Header */}
-        <div className="border-b border-slate-200 bg-slate-50" style={{ margin: '-80px', padding: '80px', marginBottom: '80px' }}>
+        <div className="border-b border-slate-200 bg-slate-50 -m-6 p-6 mb-6">
           <h2 className="text-xl font-bold text-slate-800">
             Import/Export Collections
           </h2>
@@ -110,7 +110,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Content */}
-        <div className="space-y-8">
+        <div className="space-y-6 overflow-y-auto max-h-[50vh]">
           {/* Import Section */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-4">Import from Postman</h3>
@@ -183,7 +183,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Footer */}
-        <div className="border-t border-slate-200 bg-slate-50 flex justify-end" style={{ margin: '-80px', padding: '80px', marginTop: '80px' }}>
+        <div className="border-t border-slate-200 bg-slate-50 -m-6 p-6 mt-6 flex justify-end">
           <button
             onClick={onClose}
             className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"
