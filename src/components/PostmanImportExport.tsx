@@ -98,8 +98,9 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
           margin: '0 4rem'
         }}
       >
+        <div className="p-20">
         {/* Header */}
-        <div className="p-20 border-b border-slate-200 bg-slate-50">
+        <div className="border-b border-slate-200 bg-slate-50 -m-20 p-20 mb-20">
           <h2 className="text-xl font-bold text-slate-800">
             Import/Export Collections
           </h2>
@@ -109,7 +110,7 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Content */}
-        <div className="p-20 space-y-8">
+        <div className="space-y-8">
           {/* Import Section */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-4">Import from Postman</h3>
@@ -182,13 +183,14 @@ const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) =>
         </div>
 
         {/* Footer */}
-        <div className="p-20 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <div className="border-t border-slate-200 bg-slate-50 -m-20 p-20 mt-20 flex justify-end">
           <button
             onClick={onClose}
             className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"
           >
             Close
           </button>
+        </div>
         </div>
       </div>
     </div>
