@@ -88,8 +88,8 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ requestConfig, onClose })
           margin: '0 4rem'
         }}
       >
-        <div className="p-20">
-        <div className="border-b border-slate-200 bg-slate-50 -m-20 p-20 mb-20">
+        <div style={{ padding: '80px' }}>
+        <div className="border-b border-slate-200 bg-slate-50" style={{ margin: '-80px', padding: '80px', marginBottom: '80px' }}>
           <h2 className="text-xl font-bold text-slate-800">Generate Code Snippet</h2>
           <p className="text-sm text-slate-500 mt-1">
             Generate code snippets for your API request in various programming languages
@@ -139,7 +139,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ requestConfig, onClose })
           </div>
         </div>
 
-        <div className="border-t border-slate-200 bg-slate-50 -m-20 p-20 mt-20 flex justify-end">
+        <div className="border-t border-slate-200 bg-slate-50 flex justify-end" style={{ margin: '-80px', padding: '80px', marginTop: '80px' }}>
           <button
             onClick={onClose}
             className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"

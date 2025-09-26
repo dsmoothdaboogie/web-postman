@@ -103,8 +103,8 @@ const EnvironmentEditor: React.FC<EnvironmentEditorProps> = ({ environment, onCl
           margin: '0 4rem'
         }}
       >
-        <div className="p-20">
-               <div className="border-b border-slate-200 bg-slate-50 -m-20 p-20 mb-20">
+        <div style={{ padding: '80px' }}>
+               <div className="border-b border-slate-200 bg-slate-50" style={{ margin: '-80px', padding: '80px', marginBottom: '80px' }}>
           <h2 className="text-xl font-bold text-slate-800">
             {environment ? 'Edit Environment' : 'Create Environment'}
           </h2>
@@ -177,7 +177,7 @@ const EnvironmentEditor: React.FC<EnvironmentEditorProps> = ({ environment, onCl
           </div>
         </div>
 
-               <div className="border-t border-slate-200 bg-slate-50 -m-20 p-20 mt-20 flex justify-between">
+               <div className="border-t border-slate-200 bg-slate-50 flex justify-between" style={{ margin: '-80px', padding: '80px', marginTop: '80px' }}>
           <div>
             {environment && (
               <button

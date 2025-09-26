@@ -78,8 +78,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
           margin: '0 4rem'
         }}
       >
-        <div className="p-20">
-        <div className="border-b border-slate-200 bg-slate-50 -m-20 p-20 mb-20">
+        <div style={{ padding: '80px' }}>
+        <div className="border-b border-slate-200 bg-slate-50" style={{ margin: '-80px', padding: '80px', marginBottom: '80px' }}>
           <h2 className="text-xl font-bold text-slate-800">Settings & Preferences</h2>
           <p className="text-sm text-slate-500 mt-1">
             Configure your application settings and preferences
@@ -166,7 +166,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onClose }) => {
           </div>
         </div>
 
-        <div className="border-t border-slate-200 bg-slate-50 -m-20 p-20 mt-20 flex justify-between">
+        <div className="border-t border-slate-200 bg-slate-50 flex justify-between" style={{ margin: '-80px', padding: '80px', marginTop: '80px' }}>
           <button
             onClick={handleClear}
             className="px-6 py-3 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-all duration-200 font-semibold"
