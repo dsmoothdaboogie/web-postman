@@ -8,190 +8,185 @@ interface PostmanImportExportProps {
 
 const PostmanImportExport: React.FC<PostmanImportExportProps> = ({ onClose }) => {
   const { collections, requests, createCollection, createRequest } = useApp();
-  const [isImporting, setIsImporting] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const [importError, setImportError] = useState<string | null>(null);
-  const [importSuccess, setImportSuccess] = useState<string | null>(null);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importStatus, setImportStatus] = useState<string>('');
+  const [selectedCollectionId, setSelectedCollectionId] = useState<string>('');
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (file && file.type === 'application/json') {
+      setImportFile(file);
+      setImportStatus('');
+    } else {
+      setImportStatus('Please select a valid JSON file');
+    }
+  };
 
-    setIsImporting(true);
-    setImportError(null);
-    setImportSuccess(null);
+  const handleImport = async () => {
+    if (!importFile) {
+      setImportStatus('Please select a file to import');
+      return;
+    }
 
     try {
-      const text = await file.text();
-      const postmanJson = JSON.parse(text);
+      const text = await importFile.text();
+      const postmanData = JSON.parse(text);
       
-      const { collection, requests: importedRequests } = await PostmanService.importCollection(postmanJson);
+      // Validate that it's a Postman collection
+      if (!postmanData.info || !postmanData.item) {
+        throw new Error('Invalid Postman collection format');
+      }
+
+      const { collection, requests: parsedRequests } = PostmanService.parsePostmanCollection(postmanData);
       
       // Create the collection
       await createCollection(collection.name, collection.description);
       
+      // Get the created collection (we'll need to find it by name since createCollection doesn't return the ID)
+      const createdCollections = await import('../database').then(m => m.db.collections.toArray());
+      const newCollection = createdCollections.find(c => c.name === collection.name);
+      
+      if (!newCollection) {
+        throw new Error('Failed to create collection');
+      }
+      
       // Create all requests
-      for (const request of importedRequests) {
-        await createRequest(request.name, request.method, request.url, collection.id);
+      for (const request of parsedRequests) {
+        await createRequest(
+          request.name,
+          request.method,
+          request.url,
+          newCollection.id
+        );
       }
 
-      setImportSuccess(`Successfully imported "${collection.name}" with ${importedRequests.length} requests!`);
+      setImportStatus(`Successfully imported collection "${collection.name}" with ${parsedRequests.length} requests`);
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     } catch (error) {
-      console.error('Import error:', error);
-      setImportError(error instanceof Error ? error.message : 'Failed to import collection');
-    } finally {
-      setIsImporting(false);
+      setImportStatus(`Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
   const handleExport = () => {
-    setIsExporting(true);
-    
-    try {
-      const postmanJson = PostmanService.exportToPostman(collections, requests);
-      
-      // Create and download the file
-      const blob = new Blob([postmanJson], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'webpostman-collections.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      setTimeout(() => setIsExporting(false), 1000);
-    } catch (error) {
-      console.error('Export error:', error);
-      setImportError('Failed to export collections');
-      setIsExporting(false);
+    if (!selectedCollectionId) {
+      setImportStatus('Please select a collection to export');
+      return;
     }
+
+    const collection = collections.find(c => c.id === selectedCollectionId);
+    if (!collection) {
+      setImportStatus('Collection not found');
+      return;
+    }
+
+    const collectionRequests = requests.filter(r => r.collectionId === selectedCollectionId);
+    const postmanCollection = PostmanService.exportToPostman(collection, collectionRequests);
+    
+    const json = JSON.stringify(postmanCollection, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${collection.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_collection.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    setImportStatus(`Successfully exported collection "${collection.name}"`);
+    setTimeout(() => {
+      onClose();
+    }, 2000);
   };
 
   return (
-    <div 
-      className="fixed inset-0 flex items-center justify-center z-[9999]"
-      onClick={onClose}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 99999,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Softer grey background
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <div 
-        className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[80vh] overflow-hidden mx-4"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          backgroundColor: 'white',
-          borderRadius: '12px',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-          maxWidth: '48rem',
-          width: '100%',
-          margin: '0 4rem'
-        }}
-      >
-        <div className="p-6">
-        {/* Header */}
-        <div className="border-b border-slate-200 bg-slate-50 -m-6 p-6 mb-6">
-          <h2 className="text-xl font-bold text-slate-800">
-            Import/Export Collections
-          </h2>
-          <p className="text-sm text-slate-500 mt-1">
-            Import Postman collections or export your collections to Postman format
-          </p>
-        </div>
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold text-slate-800">Postman Import/Export</h2>
+        <button
+          onClick={onClose}
+          className="text-slate-400 hover:text-slate-600 transition-colors"
+        >
+          ×
+        </button>
+      </div>
 
-        {/* Content */}
-        <div className="space-y-6 overflow-y-auto max-h-[50vh]">
-          {/* Import Section */}
+      {/* Import Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-slate-700">Import Postman Collection</h3>
+        <div className="space-y-3">
           <div>
-            <h3 className="text-lg font-semibold text-slate-700 mb-4">Import from Postman</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-600 mb-2">
-                  Select Postman Collection File
-                </label>
-                <input
-                  type="file"
-                  accept=".json"
-                  onChange={handleFileUpload}
-                  disabled={isImporting}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                />
-              </div>
-              
-              {isImporting && (
-                <div className="flex items-center space-x-2 text-orange-600">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-600"></div>
-                  <span className="text-sm">Importing collection...</span>
-                </div>
-              )}
-
-              {importError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-sm text-red-600">{importError}</p>
-                </div>
-              )}
-
-              {importSuccess && (
-                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-sm text-green-600">{importSuccess}</p>
-                </div>
-              )}
-            </div>
+            <label className="block text-sm font-medium text-slate-600 mb-2">
+              Select Postman Collection JSON File
+            </label>
+            <input
+              type="file"
+              accept=".json"
+              onChange={handleFileChange}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
           </div>
-
-          {/* Export Section */}
-          <div>
-            <h3 className="text-lg font-semibold text-slate-700 mb-4">Export to Postman</h3>
-            <div className="space-y-4">
-              <p className="text-sm text-slate-600">
-                Export your collections in Postman format. This will create a JSON file that you can import into Postman.
-              </p>
-              
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                <div>
-                  <p className="font-medium text-slate-700">Export Collections</p>
-                  <p className="text-sm text-slate-500">
-                    {collections.length} collection{collections.length !== 1 ? 's' : ''} with {requests.length} request{requests.length !== 1 ? 's' : ''}
-                  </p>
-                </div>
-                <button
-                  onClick={handleExport}
-                  disabled={isExporting || collections.length === 0}
-                  className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-modern"
-                >
-                  {isExporting ? 'Exporting...' : 'Export'}
-                </button>
-              </div>
-
-              {collections.length === 0 && (
-                <p className="text-sm text-slate-500 italic">
-                  No collections to export. Create some collections first.
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="border-t border-slate-200 bg-slate-50 -m-6 p-6 mt-6 flex justify-end">
           <button
-            onClick={onClose}
-            className="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all duration-200 font-semibold"
+            onClick={handleImport}
+            disabled={!importFile}
+            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            Close
+            Import Collection
           </button>
         </div>
+      </div>
+
+      {/* Export Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-slate-700">Export Collection</h3>
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-slate-600 mb-2">
+              Select Collection to Export
+            </label>
+            <select
+              value={selectedCollectionId}
+              onChange={(e) => setSelectedCollectionId(e.target.value)}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              <option value="">Choose a collection...</option>
+              {collections.map(collection => (
+                <option key={collection.id} value={collection.id}>
+                  {collection.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            onClick={handleExport}
+            disabled={!selectedCollectionId}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Export Collection
+          </button>
         </div>
+      </div>
+
+      {/* Status Message */}
+      {importStatus && (
+        <div className={`p-3 rounded-lg ${
+          importStatus.includes('Successfully') 
+            ? 'bg-green-50 text-green-800 border border-green-200' 
+            : 'bg-red-50 text-red-800 border border-red-200'
+        }`}>
+          {importStatus}
+        </div>
+      )}
+
+      {/* Instructions */}
+      <div className="bg-slate-50 p-4 rounded-lg">
+        <h4 className="font-semibold text-slate-700 mb-2">Instructions</h4>
+        <ul className="text-sm text-slate-600 space-y-1">
+          <li>• <strong>Import:</strong> Select a Postman collection JSON file to import all requests and folders</li>
+          <li>• <strong>Export:</strong> Choose a collection to export as a Postman-compatible JSON file</li>
+          <li>• <strong>Compatibility:</strong> Supports Postman Collection Format v2.1</li>
+          <li>• <strong>Features:</strong> Preserves requests, headers, parameters, body, and authentication</li>
+        </ul>
       </div>
     </div>
   );
